@@ -10,12 +10,12 @@ import colorsys
 GAME_SIZE = 800
 BASEDIR = os.path.dirname(os.path.abspath(__file__))
 
-# Try ../assets first (for tesseract/python/tesseract.py)
+# try ../assets first (tesseract/python/tesseract.py)
 assets_candidate = os.path.normpath(os.path.join(BASEDIR, "..", "assets"))
 if os.path.isdir(assets_candidate):
     ASSETSDIR = assets_candidate
 else:
-    # Fallback to ./assets (for tesseract/tesseract.py)
+    # fallback to ./assets (for tesseract/tesseract.py)
     ASSETSDIR = os.path.join(BASEDIR, "assets")
 
 
@@ -216,7 +216,7 @@ class TesseractApp:
         self.motion_blur = True
         self.show_keybinds = False
 
-        self.state = 1  # 0=Visualization,1=MainMenu,2=PaletteMenu,3=KeybindMenu
+        self.state = 1  # 0 = Visualization , 1 = MainMenu, 2 = PaletteMenu, 3 = KeybindMenu
 
         self.palette_fade = FadeSurface((GAME_SIZE, GAME_SIZE))
         self.keybind_fade = FadeSurface((GAME_SIZE, GAME_SIZE))
@@ -231,11 +231,11 @@ class TesseractApp:
         self.menu_selected = 0
         self.fullscreen = False
 
-        # For chaos mode cycling
+        # Chaos mode cycling
         self.chaos_palette_set = 0
         self.chaos_palette_idx = 0
 
-        # For restoring palette after chaos mode
+        # restores palette after chaos mode
         self.last_normal_palette_set = 0
         self.last_normal_palette_idx = 0
 
@@ -327,7 +327,7 @@ class TesseractApp:
             if event.key == pygame.K_F11:
                 self.toggle_fullscreen()
             mods = pygame.key.get_mods()
-            # Only allow shift+number if not in chaos mode
+            # Only allow shift + num if not in chaos mode
             if not self.chaos_mode and mods & pygame.KMOD_SHIFT:
                 key_to_set = {
                     pygame.K_1: 0,
@@ -382,7 +382,7 @@ class TesseractApp:
             if event.key == pygame.K_F11:
                 self.toggle_fullscreen()
             if self.chaos_mode:
-                return  # Palette menu disabled in chaos mode
+                return  # palette menu disabled in chaos mode
             if event.key == pygame.K_LEFT:
                 self.palette_set_idx = (self.palette_set_idx - 1) % 10
                 self.palette_idx_in_set = 0
@@ -401,10 +401,10 @@ class TesseractApp:
                     self.update_current_palette()
                     self.play_sound(random.choice(beep_sounds))
             elif event.key == pygame.K_p and (pygame.key.get_mods() & pygame.KMOD_SHIFT):
-                self.state = 0  # Back to visualization
+                self.state = 0  # back to visualization
                 self.play_sound(random.choice(beep_sounds))
             elif event.key == pygame.K_ESCAPE:
-                self.state = 1  # Back to main menu
+                self.state = 1  # back to main menu
                 self.play_sound(random.choice(beep_sounds))
 
     def handle_keybind_menu_events(self, event):
@@ -412,10 +412,10 @@ class TesseractApp:
             if event.key == pygame.K_F11:
                 self.toggle_fullscreen()
             if event.key == pygame.K_m and (pygame.key.get_mods() & pygame.KMOD_SHIFT):
-                self.state = 0  # Back to visualization
+                self.state = 0  # back to visualization
                 self.play_sound(random.choice(beep_sounds))
             elif event.key == pygame.K_ESCAPE:
-                self.state = 1  # Back to main menu
+                self.state = 1  # back to main menu
                 self.play_sound(random.choice(beep_sounds))
 
     def update_angles_auto(self):
@@ -511,7 +511,7 @@ class TesseractApp:
                         if event.key == pygame.K_ESCAPE:
                             self.state = 1
                             self.chaos_mode = False
-                            # Restore last palette when leaving chaos mode
+                            # restore last palette when exiting chaos mode
                             self.palette_set_idx = self.last_normal_palette_set
                             self.palette_idx_in_set = self.last_normal_palette_idx
                             self.update_current_palette()
@@ -545,14 +545,14 @@ class TesseractApp:
                             self.motion_blur = True
                             self.play_sound(random.choice(beep_sounds))
                             if self.chaos_mode:
-                                # Save current palette before chaos mode
+                                # preserves current palette before chaos mode
                                 self.last_normal_palette_set = self.palette_set_idx
                                 self.last_normal_palette_idx = self.palette_idx_in_set
-                                # Start chaos cycling at current
+                                # start chaos mode cycling at current
                                 self.chaos_palette_set = self.palette_set_idx
                                 self.chaos_palette_idx = self.palette_idx_in_set
                             else:
-                                # Restore palette after chaos mode
+                                # restore palette after chaos mode
                                 self.palette_set_idx = self.last_normal_palette_set
                                 self.palette_idx_in_set = self.last_normal_palette_idx
                                 self.update_current_palette()
@@ -577,7 +577,7 @@ class TesseractApp:
                                 self.update_current_palette()
                                 self.play_sound(random.choice(beep_sounds))
 
-            # Draw everything to game_surface first
+            # draws everything to game_surface first
             if self.state == 1:
                 self.draw_main_menu()
             elif self.state == 2:
@@ -623,7 +623,7 @@ class TesseractApp:
                     self.keybind_fade.draw(self.game_surface)
                     self.draw_keybind_menu()
 
-            # Now scale and blit game_surface to display_surface
+            # scale and blit game_surface to display_surface
             if self.fullscreen:
                 dw, dh = self.display_surface.get_size()
                 size = min(dw, dh)
@@ -648,4 +648,5 @@ if __name__ == "__main__":
         import traceback
         print("An error occurred:", e)
         traceback.print_exc()
+
         input("Press Enter to close...")
